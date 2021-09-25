@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#Proxy Finder
+#Find proxyes for anon online using an API
+#        -- By CoGi
+
+defaultimes=10
+if [[ $1 -eq "" ]]; then
+  times=$defaultimes-1
+else
+  times=$1-1
+fi
+api="https://api.getproxylist.com/proxy" #API link
+i=0 #counter
+while [[ $i -le $times ]]; do
+  number=$(($i+1))
+  echo "Proxy n. $number"
+  curl $api
+  i=$(($i+1))
+done
+echo ""
+echo "Stay Safe!!!"

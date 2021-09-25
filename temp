@@ -1,0 +1,16 @@
+#!/bin/bash
+
+max=0
+
+while true; do
+	temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+	hr_temp=$(expr $temp / 1000)
+	
+	if [[ $hr_temp > $max ]]; then
+		max=$hr_temp
+	fi
+	
+	clear
+	echo "$(expr $temp / 1000)° (max: $max°)"
+	sleep 1
+done

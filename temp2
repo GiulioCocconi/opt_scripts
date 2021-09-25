@@ -1,0 +1,15 @@
+#!/bin/bash
+MAX_TEMP_FILE="/home/giulio/.session/maxtemp"
+if [[ ! -f $MAX_TEMP_FILE ]]; then
+	touch $MAX_TEMP_FILE
+	echo 0 > $MAX_TEMP_FILE
+fi
+
+max=$(cat $MAX_TEMP_FILE)
+temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+hr_temp=$(expr $temp / 1000)
+
+if [[ $hr_temp > $max ]]; then
+	echo $hr_temp > $MAX_TEMP_FILE
+fi
+echo "$hr_temp° (max: $max°)"

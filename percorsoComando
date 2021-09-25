@@ -1,0 +1,5 @@
+#!/bin/bash
+out_whereis=$(whereis $1)
+readarray -td": " arr <<<"$out_whereis"
+echo ${arr[1]}
+

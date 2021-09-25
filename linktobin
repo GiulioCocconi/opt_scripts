@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+import os
+import sys
+
+def parent(directory):
+    parent_dir = os.path.join(directory, "..")
+    return os.path.abspath(parent_dir)
+
+
+directory = sys.argv[1]
+bin_dir = "/opt/bin"
+
+if len(sys.argv) > 2: bin_dir = sys.argv[2]
+
+base_dir = parent(bin_dir)
+
+for file_name in os.listdir(directory):
+    path = os.path.join(directory, file_name)
+    link_name = os.path.join(bin_dir, file_name)
+    if os.path.isfile(path) and file_name[0] != ".":
+        print(f"Creazione del link a {file_name} [{path}] in {bin_dir}")
+        os.system(f"sudo ln -s {path} {link_name}")
+print()
+print("Finito :-)")

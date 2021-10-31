@@ -1,6 +1,20 @@
 #!/bin/bash
-echo "I'll go away then..."
-rm -f $SESSION_DIR/*
 
-sleep 1
+LOGGED_USERS=$(users)
+readarray -td" " LOGGED_ARR <<<"$LOGGED_USERS" # Crea un array contenente gli utenti attualmente loggati
+
+# Se eseguito da un terminale stampa la stringa di goodbye e attendi un secondo
+if [ -t 1 ]; then
+	echo "I'll go away then..."
+	sleep 1
+fi
+
+
+# Elimina la directory .session di ogni utente loggato
+for user in "${LOGGED_ARR[@]}"; do
+	user=${user//$'\n'/} # Elimina le newline nella variabile utente
+	[[ -d /home/$user/.session ]] && rm -f /home/$user/.session/*
+done
+
+# Spegni il sistema
 shutdown -P now

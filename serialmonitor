@@ -6,7 +6,7 @@ fi
 
 PORT=$1
 
-COMMAND="pio device monitor --echo --filter colorize --filter send_on_enter --port $PORT"
+COMMAND="pio device monitor --echo --filter send_on_enter --port $PORT"
 
 if [[ $2 != "" ]]; then
 	COMMAND="$COMMAND --baud $2"

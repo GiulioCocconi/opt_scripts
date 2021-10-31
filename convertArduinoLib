@@ -1,0 +1,25 @@
+#!/bin/bash
+
+percorso=/tmp/lib01
+mkdir $percorso
+cd $percorso
+echo "Aggiornamento libreria arduino..."
+read -p "Nome libreria: " nome
+read -p "Descrizione: " descrizione
+read -p "Versione [1.0.0]: " versione
+read -p "Link repo libreria: " link
+git clone $link .
+mkdir src
+mkdir include
+cp /opt/Nproj/library.json .
+sed -i "s/NOME/$nome/g" library.json
+sed -i "s/DESCRIZIONE/$descrizione/g" library.json
+sed -i "s/VERSIONE/$versione/g" library.json
+sed -i "s/LINK/$link.git/g" library.json
+mv *.h include/
+mv *.cpp src/
+git add .
+git commit -m "Libreria aggiornata per compatibilità platformio"
+git push
+cd
+sudo rm -r $percorso

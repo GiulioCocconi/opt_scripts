@@ -9,13 +9,25 @@ if [[ $1 -eq "" ]]; then
 else
   times=$1-1
 fi
-api="https://api.getproxylist.com/proxy" #API link
+
+minUptime=75
+
+api="https://api.getproxylist.com/proxy?minUptime=$minUptime&protocol[]=socks4&protocol[]=socks5" #API link
+
 i=0 #counter
 while [[ $i -le $times ]]; do
-  number=$(($i+1))
-  echo "Proxy n. $number"
-  curl $api
+  proxy=$(curl -s $api | grep "protocol\|ip\|port")	# "ip": "130.61.227.199", "port": 80, "protocol": "http"
+
+  proxy=$(echo $proxy | xargs | tr -d '[:space:]') 	#Remove spaces and quotes
+
+  ip=$(echo $proxy | cut -f1 -d, | sed 's/ip://g')
+  port=$(echo $proxy | cut -f2 -d, | sed 's/port://g')
+  protocol=$(echo $proxy | cut -f3 -d, | sed 's/protocol://g')
+
+  echo "$protocol $ip $port"
+
   i=$(($i+1))
 done
+
 echo ""
 echo "Stay Safe!!!"

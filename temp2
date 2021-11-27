@@ -1,5 +1,5 @@
 #!/bin/bash
-MAX_TEMP_FILE="/home/giulio/.session/maxtemp"
+MAX_TEMP_FILE="$HOME/.session/maxtemp"
 if [[ ! -f $MAX_TEMP_FILE ]]; then
 	touch $MAX_TEMP_FILE
 	echo 0 > $MAX_TEMP_FILE

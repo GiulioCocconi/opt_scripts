@@ -1,0 +1,28 @@
+#!/bin/sh
+PASSWD_FILE="$HOME/.vnc/passwd"
+
+if [[ $# != 1 ]]; then
+	PORT=1234
+else
+	PORT=$1
+fi
+
+if [ ! -f $PASSWD_FILE ]; then
+	echo
+	echo "Creating VNC passwd file"
+	echo "The password you provide will be used to perform VNC connection"
+	echo
+	vncpasswd
+	echo
+	sleep 1
+fi
+
+echo "Starting server @ port $PORT"
+sudo ufw allow $PORT 
+# BETTER: sudo ufw allow $PORT from $NETRANGE
+x0vncserver -rfbport $PORT -rfbauth $PASSWD_FILE
+echo "Bye"
+#ngrok tcp $PORT
+sudo ufw delete allow $PORT
+killall x0vncserver 2> /dev/null
+exit 0

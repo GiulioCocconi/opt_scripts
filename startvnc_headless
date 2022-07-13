@@ -1,0 +1,34 @@
+#!/bin/bash
+
+function error {
+	echo "[ERROR] $1"
+	[[ $2 != "" ]] && echo $2
+	exit 1
+}
+
+function usage_error {
+	error "$1" "USAGE: $0 DISPLAY START/STOP"
+}
+
+[[ $(id -u) != 0 ]] 	&& error "Please run as superuser"
+[[ $# != 2 ]] 		&& usage_error "Wrong number of arguments"
+
+DISPLAY=$1
+PORT=$(expr $DISPLAY + 5900)
+MODE=${2,,}
+
+if [[ $MODE == "start" ]]; then
+	echo "Starting server @ port $PORT"
+	ufw allow $PORT #from IP
+	systemctl start "vncserver@:$DISPLAY.service"
+elif [[ $MODE == "stop" ]]; then	
+	echo "Stopping server @ port $PORT"
+	ufw delete allow $PORT #from IP
+	systemctl stop "vncserver@:$DISPLAY.service"
+	echo "Shutting down in 5s..."
+	sleep 5
+	shutup
+else
+	usage_error "Unknown mode"
+fi
+

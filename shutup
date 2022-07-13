@@ -5,7 +5,9 @@ readarray -td" " LOGGED_ARR <<<"$LOGGED_USERS" # Crea un array contenente gli ut
 
 # Se eseguito da un terminale stampa la stringa di goodbye e attendi un secondo
 if [ -t 1 ]; then
+	UPTIME=$(uptime -p | sed 's/up //' | sed 's/,/ and/')
 	echo "I'll go away then..."
+	echo "After $UPTIME of activity I need to go to sleep ;)"
 	sleep 1
 fi
 
